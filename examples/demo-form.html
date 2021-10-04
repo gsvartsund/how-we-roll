@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo FORM</title>
+    <style>
+     /* Her kan stil defineres (vi skal bruke Cascading Style Sheets) */
+
+    </style>
+ <!--
+
+    [[[[[[[[     [[[[[[[[        [[[[   [[[[   [[[[  [[[[
+    [::::::[    [::[             [::[   [::[   [::[  [::[
+      [::[      [::[             [::[   [::[   [::[  [::[
+      [::[       [::::[   [[[[   [::[   [::[   [[[[[[[[[[
+      [::[          [::[         [::[   [::[         [::[
+    [::::::[        [::[         [::[   [::[         [::[
+    [[[[[[[[   [[[[[[[[          [[[[   [[[[         [[[[
+
+ -->
+</head>
+<body>
+  <!-- Her skrives alt innhold, som man ønsker å "tegne" på skjermen. -->
+  <!-- Oppgave:
+    2) definere et form element og et felt for å skrive inn tekst
+    3) definere en knapp, som gjør en prosessering av innholdet i tekstfeltet
+    4) fange opp data med et javascript-program
+
+  -->
+  <form id="test">
+      <label style="font-size: 1.6em" for="name">Navn:</label>
+      <input style="font-size: 1.6em" type="text" name="name" id="name">
+      <button style="font-size: 1.6em" type="submit">Prosesser</button></div>
+  </form>
+  <div class="results"></div>
+
+  <script>
+   // Her skrives kode i JavaScript som "gir liv" til bilde på skjermen.
+   function helloForm(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        console.log(data.entries());
+        const formJSON = Object.fromEntries(data.entries());
+        const results = document.querySelector('.results');
+        results.innerText = JSON.stringify(formJSON, null, 2);
+        //results.textContent = `Form Submitted! Time stamp: ${event.timeStamp}`;
+
+   };
+
+   const form = document.querySelector('#test');
+   form.addEventListener('submit', helloForm);
+
+  </script>
+</body>
+</html>
