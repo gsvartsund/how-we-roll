@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data fra JSON-fil</title>
+    <style>
+     /* Her kan stil defineres (vi skal bruke Cascading Style Sheets) */
+    </style>
+ <!--
+
+    [[[[[[[[     [[[[[[[[        [[[[   [[[[   [[[[  [[[[
+    [::::::[    [::[             [::[   [::[   [::[  [::[
+      [::[      [::[             [::[   [::[   [::[  [::[
+      [::[       [::::[   [[[[   [::[   [::[   [[[[[[[[[[
+      [::[          [::[         [::[   [::[         [::[
+    [::::::[        [::[         [::[   [::[         [::[
+    [[[[[[[[   [[[[[[[[          [[[[   [[[[         [[[[
+
+ -->
+</head>
+<body>
+<!-- Formålet med denne oppgaven er å illustrere:
+    (1) Hvordan er JavaScript programmer for webapplikasjoner strukturert
+    (2) Hvordan lastes JavaScript programmer inn i nettleserapplikasjonen
+    (3) Hvordan få JavaScript programmer å ta inndata (fra bruker og fra andre datamaskiner)
+    (4) Hvordan få JavaScript programmer å produserer utdata
+    (5) Hvordan JavaScript programmer utføres asynkront ved å respondere på hendelser
+
+ (1) Arkitektur til webapplikasjoner har en klient og en server.
+ Vi antar at klientsiden har en nettleserapplikasjon installert.
+ Denne applikasjonen kan tolke HTML-filer og vise bilder på skjermen basert på disse.
+ Hvis programmerer ønsker å bruke JavaScript, må en slik kode inkluderes i HTML-filen ved hjelp a <script>-elementet.
+ (2) Se eksempel i delay.html og load-event.html; se også https://html.spec.whatwg.org/multipage/scripting.html#script-processing-model
+ (3) FormData relatert til <form>-elementet, fetch-funksjon
+ (4)
+-->
+ <!-- Definerer div-element som blir tilgjengelig i DOM-treet når siden er lastet -->
+  <div id="debug"></div>
+
+  <script>
+   // Her skrives kode i JavaScript som "gir liv" til bilde på skjermen.
+   // https://fetch.spec.whatwg.org/
+    fetch('fetchex01.json')
+    .then(response => response.json())
+    .then(data => {
+        // Hvis man velger å bruke innerHTML er det bedre å konstruerer HTML koden som skal inn i elementet først og så bruke innerHTML metoden for å legge det inn i DOM-treet
+        let debug = document.getElementById("debug");
+        Object.entries(data).forEach(([key, value]) => {
+            debug.textContent += `${key}: ${value}<br>`;
+            //debug.innerText += `${key}: ${value}<br>`;
+            //debug.innerHTML += `${key}: ${value}<br>`;
+        });
+        //data.forEach((element) => {
+        //    debug.textContent += $element.data01;
+        //});
+        //console.log(data);
+    });
+
+    fetch('fetchex02.json')
+    .then(response => response.json())
+    .then(data => {
+        // Hvis man velger å bruke innerHTML er det bedre å konstruerer HTML koden som skal inn i elementet først og så bruke innerHTML metoden for å legge det inn i DOM-treet
+        let debug = document.getElementById("debug");
+        Object.entries(data).forEach(([key, value]) => {
+            debug.textContent += `${key}: ${value}<br>`;
+            //debug.innerText += `${key}: ${value}<br>`;
+            //debug.innerHTML += `${key}: ${value}<br>`;
+        });
+        //data.forEach((element) => {
+        //    debug.textContent += $element.data01;
+        //});
+        //console.log(data);
+    });
+
+  </script>
+</body>
+</html>
