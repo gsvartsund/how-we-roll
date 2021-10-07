@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data fra JSON-fil (med flere fetch-funksjoner)</title>
+    <style>
+     /* Her kan stil defineres (vi skal bruke Cascading Style Sheets) */
+    </style>
+    <!--
+
+       [[[[[[[[     [[[[[[[[        [[[[   [[[[   [[[[  [[[[
+       [::::::[    [::[             [::[   [::[   [::[  [::[
+         [::[      [::[             [::[   [::[   [::[  [::[
+         [::[       [::::[   [[[[   [::[   [::[   [[[[[[[[[[
+         [::[          [::[         [::[   [::[         [::[
+       [::::::[        [::[         [::[   [::[         [::[
+       [[[[[[[[   [[[[[[[[          [[[[   [[[[         [[[[
+
+    -->
+</head>
+<body> <!-- innholdet i html-dokumentet -->
+
+
+<script>
+// https://html.spec.whatwg.org/#the-table-element (sett 2021-10-07)
+// https://developer.mozilla.org/en-US/docs/Web/API/Document_object_model/How_to_create_a_DOM_tree (sett 2021-10-06)
+function createTableSkeleton() {
+    var hwrTable = document.createElement("table");
+    document.body.appendChild(hwrTable);
+
+    var hwrTableCaption = document.createElement("caption");
+    hwrTable.appendChild(hwrTableCaption);
+    hwrTableCaption.innerText = "Svar fra HowWeRoll spøreundersøkelse";
+
+    var hwrTableTHead = document.createElement("thead");
+    hwrTable.appendChild(hwrTableTHead);
+
+    var hwrTableTHeadCol1 = document.createElement("th");
+    hwrTableTHead.appendChild(hwrTableTHeadCol1);
+    hwrTableTHeadCol1.innerText = "nøkkelord";
+
+    var hwrTableTHeadCol2 = document.createElement("th");
+    hwrTableTHead.appendChild(hwrTableTHeadCol2);
+    hwrTableTHeadCol2.innerText = "verdi";
+
+    var hwrTableTBody = document.createElement("tbody");
+    hwrTable.appendChild(hwrTableTBody);
+
+    // personElem1.setAttribute("first-name", "eric");
+}
+
+// Originalt fra https://stackoverflow.com/a/29676966 (sett 2021-10-06)
+// (1) Loop through all URLs.
+// (2) For each URL, fetch it with the fetch API, store the returned promise in list.
+// (3) Additionally, when the request is finished, store the result in results.
+// (4) Create a new promise, that resolves, when all promises in list are resolved (i.e., all requests finished).
+// (5) Enjoy the fully populated results!
+// Listeelementer (1)-(5) er det referert til lengre nede i koden
+var list = [];
+// Her kan dere legge inn URL for dere filer på https://bacit.info/hwr
+var urls = ['data-person-1a-01.json',
+            'data-person-1a-02.json',
+            'data-person-1a-03.json'];
+var results = [];
+
+urls.forEach(function(url, i) { // (1)
+  list.push( // (2)
+    fetch(url).then(function(res){
+      results[i] = res.json(); // (3)
+    })
+  );
+});
+
+Promise
+  .all(list) // (4)
+  .then(function() {
+    // alert('all requests finished!'); // (5)
+
+    // Eksempel med en tabell
+    var hwrTable = document.createElement("table");
+    document.body.appendChild(hwrTable);
+
+    var hwrTableCaption = document.createElement("caption");
+    hwrTable.appendChild(hwrTableCaption);
+    hwrTableCaption.innerText = "Svar fra HowWeRoll spøreundersøkelse";
+
+    var hwrTableTHead = document.createElement("thead");
+    hwrTable.appendChild(hwrTableTHead);
+
+    var hwrTableTBody = document.createElement("tbody");
+    hwrTable.appendChild(hwrTableTBody);
+
+    var counter = 0; // for å lage header-rad kun en gang
+    for (let entry of results) {
+        entry.then(e => {
+            // En ny rad i tabellen
+            var hwrTableTBodyRow = document.createElement("tr");
+            hwrTableTBody.appendChild(hwrTableTBodyRow);
+
+            Object.entries(e).forEach(([key, value]) => {
+                console.log(`${key}: ${value}`);
+
+                // Kun første gangen?
+                if (counter == 0) {
+                    var hwrTableTHeadRow = document.createElement("th");
+                    hwrTableTHead.appendChild(hwrTableTHeadRow);
+                    hwrTableTHeadRow.innerText = key;
+                }
+
+                // Et nytt tabelldata innhold i raden
+                var hwrTableBodyRowData = document.createElement("td");
+                hwrTableTBodyRow.appendChild(hwrTableBodyRowData);
+                hwrTableBodyRowData.innerText = value;
+            });
+            counter++;
+            console.log("Test");
+            console.log(e);
+
+
+        });
+    }
+  });
+
+  // Disse er lovnader
+  console.log(results);
+
+  // Eksempler av for-løkker (ikke direkte relatert til "HowWeRoll"
+  // Definerer en array for
+  const numbers = [];
+  for (let number = 0; number <= 12; number = number + 2) {
+    console.log(number);
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push (sett 2021-10-07)
+    numbers.push(number);
+  }
+
+  let index = 0;
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length (sett 2021-10-07)
+  console.log(`Length of array of numbers is ${numbers.length}`);
+  for (let element of numbers) {
+    console.log(`${element} at index ${index}\n`);
+    index++;
+  }
+
+  </script>
+</body>
+</html>

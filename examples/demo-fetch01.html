@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo Fetch 01</title>
+    <style>
+     /* Her kan stil defineres (vi skal bruke Cascading Style Sheets) */
+
+    </style>
+ <!--
+
+    [[[[[[[[     [[[[[[[[        [[[[   [[[[   [[[[  [[[[
+    [::::::[    [::[             [::[   [::[   [::[  [::[
+      [::[      [::[             [::[   [::[   [::[  [::[
+      [::[       [::::[   [[[[   [::[   [::[   [[[[[[[[[[
+      [::[          [::[         [::[   [::[         [::[
+    [::::::[        [::[         [::[   [::[         [::[
+    [[[[[[[[   [[[[[[[[          [[[[   [[[[         [[[[
+
+ -->
+</head>
+<body>
+  <!-- Her skrives alt innhold, som man ønsker å "tegne" på skjermen. -->
+  <div style="font-size:1.5em;" id="dorn"></div>
+  <script>
+     const minJSON = '{"dorn": "60"}';
+     // Se https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse (sett 2021-10-07)
+     const jsobj = JSON.parse(minJSON);
+     console.log(jsobj); // Object
+     console.log(jsobj.dorn);
+     let html_dorn = document.getElementById("dorn");
+     html_dorn.textContent = jsobj.dorn;
+
+     // Mock JSON fra fil
+    fetch("data-person-1a-01.json")
+    .then(response => response.json()) // Promise objekt
+    .then(data => {
+      console.log(data.navn);
+      console.log(data.gruppe);
+      console.log(data.dorn);
+      console.log(data.cora);
+      /*
+      html_dorn.textContent = data.navn;
+      html_dorn.textContent += data.gruppe;
+      html_dorn.textContent += data.dorn;
+      html_dorn.textContent += data.cora;
+      */
+      html_dorn.innerText = data.navn + "\n";
+      html_dorn.innerText += data.gruppe + "\n";
+      html_dorn.innerText += data.dorn + "\n";
+      html_dorn.innerText += data.cora + "\n";
+    });
+    /*
+    fetch("data-person-1a-02.json")
+    .then(response => response.json()) // Promise objekt
+    .then(data => {
+
+    });
+    fetch("data-person-1a-03.json")
+    .then(response => response.json()) // Promise objekt
+    .then(data => {
+      console.log(data);
+    });
+    */
+
+  </script>
+</body>
+</html>
