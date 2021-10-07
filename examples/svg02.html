@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/rich-eatin" type="text/css"/>-->
+</head>
+<body>
+<!-- Koden fra https://css-tricks.com/how-to-make-charts-with-svg/ (sist sett 2021-10-03) -->
+<figure>
+  <figcaption>Testing SVG for HowWeRoll</figcaption>
+  <div>DORN</div>
+    <!-- For SVG spesifikasjon se her https://svgwg.org/svg2-draft/ (sist sett 2021-10-06) -->
+    <!-- Eksempel basert på https://developer.mozilla.org/en-US/docs/Web/SVG/Element (sist sett 2021-10-06) -->
+  <svg id="hwrsvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <style>
+    @font-face {
+    font-family: 'RichEatinAllCaps';
+        src: url('https://fontlibrary.org/assets/fonts/rich-eatin/b87b6710407b471d270f62fb7c520855/32b2ff4fff9698a7b8d22b8d543e3fdb/RichEatinAllCaps.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+      }
+      .minfont {
+         font-family: 'RichEatinAllCaps';
+         font-weight: normal;
+         font-style: normal;
+         font-size: 0.3em;
+    }
+      </style>
+    <g>
+        <text x="2" y="9.5" dy=".45em" class="minfont">D</text>
+        <line x1="10" y1="10" x2="80" y2="10" stroke="#000000" stroke-width="0.5" />
+        <circle id="person01" cx="40" cy="10" r="1.5" fill="#ff0000"/>
+        <circle id="person02" cx="30" cy="10" r="1.5" fill="#0080ff"/>
+        <text x="85" y="9.5" dy=".45em" class="minfont">N</text>
+    </g>
+
+  </svg>
+</figure>
+<script>
+    // Pseudocode
+    // Modellering først: hvilke SVG elementer, hvor stort areal, posisjonring, hensyn til zooming ...
+    // 1) finn knaggen til svg elementet i HTML dokumentets DOM-tre
+    // 2) selektere og lagre knagger til alle gruppeelementer i svg
+    // (forutsetter modellering i forveien)
+    // 3) selektere og lagre knagger til circle-elementer i g-elementet
+    // (forutsetter modellering)
+    // 4) sette dorn-verdien fra inndata (JSON) til verdien som bestemmer sirkelens posisjon på linjen
+    let minsvg = document.getElementById("hwrsvg");
+    let glist = minsvg.getElementsByTagName("g");
+    let circles = glist[0].getElementsByTagName("circle")
+    console.log(circles[0].cx.baseVal.value);
+
+    // Mock JSON
+    const minJSON = '{"dorn": "60"}';
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse (sist sett 2021-10-06)
+    const jsobj = JSON.parse(minJSON);
+    console.log(jsobj.dorn);
+    dornValueForPerson01 = jsobj.dorn;
+    // Dette kan ikke gjøres før inndata er lastet inn i nettleserens minneområdet
+    circles.person01.cx.baseVal.value = dornValueForPerson01;
+    // circles.person02.cx.baseVal.value = dornValueForPerson02;
+
+    // Mock JSON fra fil
+    fetch("data-person-1a-01.json")
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      circles.person01.cx.baseVal.value = data.dorn;
+    });
+
+
+</script>
+</body>
+</html>
